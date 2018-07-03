@@ -12,11 +12,11 @@ class NoteService {
     private lateinit var repo: NoteRepository
 
 
-    fun getNotes(): Collection<Note> {
-        return repo.findAll()
-    }
+    fun listNotes(): Collection<Note> = repo.findAll()
 
-    fun insert(note:Note):Note{
-        return repo.save(note)
-    }
+    fun exists(id: Long): Boolean = repo.existsById(id)
+
+    fun insert(note: Note): Note = repo.save(note)
+
+    fun update(note: Note): Note? = if(note.id>0) repo.save(note) else null
 }

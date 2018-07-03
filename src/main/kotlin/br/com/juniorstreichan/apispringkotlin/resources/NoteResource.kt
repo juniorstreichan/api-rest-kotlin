@@ -18,7 +18,7 @@ class NoteResource {
     @GetMapping
     fun list(): ResponseEntity<Collection<Note>> {
 
-        val lista = service.getNotes()
+        val lista = service.listNotes()
         return ResponseEntity.ok().body(lista)
     }
 
@@ -29,5 +29,14 @@ class NoteResource {
         return ResponseEntity.created(
                 URI(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newNote.id).toUriString())
         ).body(newNote)
+    }
+
+    @PutMapping("{id}")
+    fun update(@PathVariable id: Long, @RequestBody note: Note): ResponseEntity<Note> {
+        if (service.exists(id)) {
+            val newNote = service.update(Note(id,note.title,note.description))
+            return ResponseEntity.ok().body(newNote) //TODO mudar depois
+        }
+        return ResponseEntity.notFound().build()
     }
 }
